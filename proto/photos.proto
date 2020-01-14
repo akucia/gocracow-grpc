@@ -1,0 +1,57 @@
+syntax = "proto3";
+package photos;
+
+import "google/protobuf/timestamp.proto";
+
+
+// GetPhotoRequest request multiple photos
+message GetAllPhotosRequest {
+    repeated int32 photo_ids = 1;
+}
+
+// Photo represents a single photo
+message Photo {
+    int32 photo_id = 1;
+    string filename = 2;
+    bytes content = 3;
+    int32 height  = 4;
+    int32 width  = 5;
+    google.protobuf.Timestamp timestamp = 6;
+
+}
+
+message PutPhotoRequest {
+    string filename = 1;
+    bytes content = 2;
+}
+
+message GetPhotoResponse {
+    Photo photo = 1;
+}
+
+// Status is an indicator of successful Photo upload
+enum Status {
+    OK = 0;
+    ERROR = 1;
+}
+
+
+message PutPhotoResponse {
+    int32 photo_id = 1;
+    string filename = 2;
+    Status status = 3;
+}
+
+message ListPhotosRequest {
+}
+
+message ListPhotosResponse {
+    repeated int32 photo_ids = 1;
+}
+
+// Photos stores and serves photos uploaded by the clients
+service Photos {
+    rpc ListPhotos (ListPhotosRequest) returns (ListPhotosResponse); // Unary call
+    rpc GetAllPhotos (GetAllPhotosRequest) returns (stream GetPhotoResponse); // Server-side streaming
+    rpc PutPhotos (stream PutPhotoRequest) returns (stream PutPhotoResponse); // Bi-directional streaming
+}
