@@ -28,15 +28,18 @@ var port = flag.Int("port", 5000, "Service port")
 func main() {
 	fmt.Println("Hello world - gRPC server")
 	flag.Parse()
-
+	// Open connection
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	log.Printf("listening on :%d", *port)
+	// Create new gRPC server
 	grpcServer := grpc.NewServer()
 	helloServer := HelloServer{}
+	// Add our service to the service
 	pb.RegisterHelloServer(grpcServer, &helloServer)
+	// Start handling requests
 	if err := grpcServer.Serve(lis); err != nil {
 		panic("Unable to serve!")
 	}
