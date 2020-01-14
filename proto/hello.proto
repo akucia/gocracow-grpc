@@ -1,17 +1,21 @@
 syntax = "proto3";
 
+// name of the generated package
 package hello;
 
+// The definition of our service
 service Hello {
     rpc Greetings (Request) returns (Response);
-
 }
 
-message Request {
-}
+// A simple message type - no parameters
+message Request {}
 
 message Response {
-    string text = 1;
+    string text = 1; // tag ids must always be unique
+                     // they cannot be reused if you
+                     // want to have backward
+                     // compatibility
 }
 
 
