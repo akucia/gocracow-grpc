@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/akucia/gocracow-grpc/client/go/hello"
+	pb "github.com/akucia/gocracow-grpc/client/go/hello"
 	"google.golang.org/grpc"
 )
 
@@ -26,9 +26,9 @@ func main() {
 			panic(err)
 		}
 	}()
-	client := hello.NewHelloClient(conn)
+	client := pb.NewHelloClient(conn)
 	for {
-		response, err := client.Greetings(context.Background(), &hello.Request{})
+		response, err := client.Greetings(context.Background(), &pb.Request{})
 		if err != nil {
 			log.Fatalf("Unable to greet the server! %v", err)
 		}

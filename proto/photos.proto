@@ -3,6 +3,12 @@ package photos;
 
 import "google/protobuf/timestamp.proto";
 
+// Photos stores and serves photos uploaded by the clients
+service Photos {
+    rpc ListPhotos (ListPhotosRequest) returns (ListPhotosResponse); // Unary call
+    rpc GetAllPhotos (GetAllPhotosRequest) returns (stream GetPhotoResponse); // Server-side streaming
+    rpc PutPhotos (stream PutPhotoRequest) returns (stream PutPhotoResponse); // Bi-directional streaming
+}
 
 // GetPhotoRequest request multiple photos
 message GetAllPhotosRequest {
@@ -49,9 +55,3 @@ message ListPhotosResponse {
     repeated int32 photo_ids = 1;
 }
 
-// Photos stores and serves photos uploaded by the clients
-service Photos {
-    rpc ListPhotos (ListPhotosRequest) returns (ListPhotosResponse); // Unary call
-    rpc GetAllPhotos (GetAllPhotosRequest) returns (stream GetPhotoResponse); // Server-side streaming
-    rpc PutPhotos (stream PutPhotoRequest) returns (stream PutPhotoResponse); // Bi-directional streaming
-}

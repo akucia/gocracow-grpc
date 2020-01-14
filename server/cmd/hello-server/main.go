@@ -7,7 +7,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/akucia/gocracow-grpc/server/hello"
+	pb "github.com/akucia/gocracow-grpc/server/hello"
 	"google.golang.org/grpc"
 )
 
@@ -16,9 +16,9 @@ type HelloServer struct {
 }
 
 // Greetings says `Hello World!`
-func (h HelloServer) Greetings(context.Context, *hello.Request) (*hello.Response, error) {
+func (h HelloServer) Greetings(context.Context, *pb.Request) (*pb.Response, error) {
 	log.Println("Received a call, greeting a client!")
-	return &hello.Response{
+	return &pb.Response{
 		Text: "HelloWorld!",
 	}, nil
 }
@@ -36,7 +36,7 @@ func main() {
 	log.Printf("listening on :%d", *port)
 	grpcServer := grpc.NewServer()
 	helloServer := HelloServer{}
-	hello.RegisterHelloServer(grpcServer, &helloServer)
+	pb.RegisterHelloServer(grpcServer, &helloServer)
 	if err := grpcServer.Serve(lis); err != nil {
 		panic("Unable to serve!")
 	}
